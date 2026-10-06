@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CalcSpace 前后端分离计算器" />
+  <title>CalcSpace · 前后端分离计算器</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="CalcSpace 首页">
+        <span class="brand-mark">∑</span>
+        <span><strong>CalcSpace</strong><small>前后端分离计算器</small></span>
+      </a>
+      <div class="topbar-actions">
+        <span id="connectionStatus" class="status-pill status-checking"><i></i>检查连接中</span>
+        <button id="themeToggle" class="icon-button" type="button" aria-label="切换主题">☼</button>
+      </div>
+    </header>
+
+    <main id="top" class="main-content">
+      <section class="intro-row">
+        <div>
+          <p class="eyebrow">BACKEND POWERED CALCULATION</p>
+          <h1>把复杂计算，交给可靠的后端。</h1>
+          <p class="intro-copy">输入表达式，服务端负责校验、解析、计算和保存记录。刷新页面后，历史数据仍然来自数据库。</p>
+        </div>
+        <div class="metric-card"><span>今日计算</span><strong id="todayCount">0</strong><small>条历史记录</small></div>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="calculator-card card">
+          <div class="card-heading">
+            <div><p class="section-kicker">CALCULATOR</p><h2>开始计算</h2></div>
+            <button id="clearExpression" class="text-button" type="button">清空</button>
+          </div>
+          <div class="display-panel">
+            <label for="expressionInput">表达式</label>
+            <input id="expressionInput" autocomplete="off" inputmode="decimal" placeholder="例如： (1 + 2) × 3 - 4 / 2" />
+            <div class="result-line"><span id="resultHint">等待输入表达式</span><strong id="resultValue">0</strong></div>
+          </div>
+          <div class="quick-row" aria-label="快捷操作">
+            <button class="quick-key" data-insert="(" type="button">(</button>
+            <button class="quick-key" data-insert=")" type="button">)</button>
+            <button class="quick-key" data-insert="." type="button">.</button>
+            <button class="quick-key" data-insert="√(" type="button">√ 开根号</button>
+            <button id="backspace" class="quick-key wide" type="button">⌫ 删除</button>
+          </div>
+          <div class="keypad" aria-label="计算器按键">
+            <button class="key key-muted" data-action="clear" type="button">AC</button>
+            <button class="key key-muted" data-insert="√(" type="button">√</button>
+            <button class="key key-muted" data-insert="/" type="button">÷</button>
+            <button class="key key-accent" data-insert="*" type="button">×</button>
+            <button class="key" data-insert="7" type="button">7</button>
+            <button class="key" data-insert="8" type="button">8</button>
+            <button class="key" data-insert="9" type="button">9</button>
+            <button class="key key-accent" data-insert="-" type="button">−</button>
+            <button class="key" data-insert="4" type="button">4</button>
+            <button class="key" data-insert="5" type="button">5</button>
+            <button class="key" data-insert="6" type="button">6</button>
+            <button class="key key-accent" data-insert="+" type="button">+</button>
+            <button class="key" data-insert="1" type="button">1</button>
+            <button class="key" data-insert="2" type="button">2</button>
+            <button class="key" data-insert="3" type="button">3</button>
+            <button class="key key-equals" data-action="calculate" type="button">=</button>
+            <button class="key key-zero" data-insert="0" type="button">0</button>
+            <button class="key" data-insert="." type="button">.</button>
+          </div>
+          <p class="keyboard-tip">支持键盘输入 · Enter 计算 · Esc 清空</p>
+        </article>
+
+        <aside class="history-card card">
+          <div class="card-heading">
+            <div><p class="section-kicker">DATABASE HISTORY</p><h2>计算历史</h2></div>
+            <button id="clearHistory" class="text-button danger" type="button">清空全部</button>
+          </div>
+          <div id="historyList" class="history-list"><div class="empty-state"><span class="empty-icon">◌</span><p>正在从后端加载历史…</p></div></div>
+          <div class="history-footer"><span id="historyCount">0 条记录</span><button id="refreshHistory" class="refresh-button" type="button">↻ 刷新</button></div>
+        </aside>
+      </section>
+
+      <section class="feature-strip">
+        <div class="feature-item"><span class="feature-icon">↗</span><div><strong>后端计算</strong><p>前端只提交表达式，结果由服务端返回。</p></div></div>
+        <div class="feature-item"><span class="feature-icon">▣</span><div><strong>数据库持久化</strong><p>SQLite 保存每一次成功计算。</p></div></div>
+        <div class="feature-item"><span class="feature-icon">✓</span><div><strong>安全解析</strong><p>使用白名单解析器，拒绝任意代码执行。</p></div></div>
+      </section>
+    </main>
+    <footer class="footer">CalcSpace · Frontend / Backend Separation · HBuilderX ready</footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
