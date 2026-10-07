@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5050/api';
+const API_BASE = 'https://calculator-0bzq.onrender.com';
 const state = { history: [], total: 0, page: 1, pageSize: 10, dark: localStorage.getItem('calc-theme') === 'dark', query: '', favoriteOnly: false };
 const $ = (selector) => document.querySelector(selector);
 const input = $('#expressionInput');
