@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CalcSpace 前后端分离计算器" />
+  <title>CalcSpace · 前后端分离计算器</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="CalcSpace 首页">
+        <span class="brand-mark">∑</span>
+        <span><strong>CalcSpace</strong><small>前后端分离计算器</small></span>
+      </a>
+      <div class="topbar-actions">
+        <span id="connectionStatus" class="status-pill status-checking"><i></i>检查连接中</span>
+        <button id="themeToggle" class="icon-button" type="button" aria-label="切换主题">☼</button>
+      </div>
+    </header>
+
+    <main id="top" class="main-content">
+      <section class="intro-row">
+        <div class="metric-card"><span>今日计算</span><strong id="todayCount">0</strong><small>条历史记录</small></div>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="calculator-card card">
+          <div class="card-heading">
+            <div><p class="section-kicker">CALCULATOR</p><h2>开始计算</h2></div>
+            <button id="clearExpression" class="text-button" type="button">清空</button>
+          </div>
+          <div class="mode-tabs" role="tablist" aria-label="计算器模式">
+            <button class="mode-tab is-active" data-mode="standard" type="button">标准</button>
+            <button class="mode-tab" data-mode="scientific" type="button">科学</button>
+            <button class="mode-tab" data-mode="base" type="button">进制</button>
+            <button class="mode-tab" data-mode="unit" type="button">单位</button>
+          </div>
+          <div class="display-panel">
+            <label for="expressionInput">表达式</label>
+            <input id="expressionInput" autocomplete="off" inputmode="decimal" placeholder="例如： (1 + 2) × 3 - 4 / 2" />
+            <div class="result-line"><span id="resultHint">等待输入表达式</span><strong id="resultValue">0</strong></div>
+          </div>
+          <div class="quick-row" aria-label="快捷操作">
+            <button class="quick-key" data-insert="(" type="button">(</button>
+            <button class="quick-key" data-insert=")" type="button">)</button>
+            <button class="quick-key" data-insert="." type="button">.</button>
+            <button class="quick-key" data-insert="√(" type="button">√ 开根号</button>
+            <button id="backspace" class="quick-key wide" type="button">⌫ 删除</button>
+          </div>
+          <div class="keypad" aria-label="计算器按键">
+            <button class="key key-muted" data-action="clear" type="button">AC</button>
+            <button class="key key-muted" data-insert="√(" type="button">√</button>
+            <button class="key key-muted" data-insert="/" type="button">÷</button>
+            <button class="key key-accent" data-insert="*" type="button">×</button>
+            <button class="key" data-insert="7" type="button">7</button>
+            <button class="key" data-insert="8" type="button">8</button>
+            <button class="key" data-insert="9" type="button">9</button>
+            <button class="key key-accent" data-insert="-" type="button">−</button>
+            <button class="key" data-insert="4" type="button">4</button>
+            <button class="key" data-insert="5" type="button">5</button>
+            <button class="key" data-insert="6" type="button">6</button>
+            <button class="key key-accent" data-insert="+" type="button">+</button>
+            <button class="key" data-insert="1" type="button">1</button>
+            <button class="key" data-insert="2" type="button">2</button>
+            <button class="key" data-insert="3" type="button">3</button>
+            <button class="key key-equals" data-action="calculate" type="button">=</button>
+            <button class="key key-zero" data-insert="0" type="button">0</button>
+            <button class="key" data-insert="." type="button">.</button>
+          </div>
+          <div id="scientificPanel" class="scientific-panel" aria-label="科学计算按键" hidden>
+            <p class="scientific-title">科学计算 · 三角函数使用角度制</p>
+            <div class="scientific-grid">
+              <button class="scientific-key" data-insert="sin(" type="button">sin</button>
+              <button class="scientific-key" data-insert="cos(" type="button">cos</button>
+              <button class="scientific-key" data-insert="tan(" type="button">tan</button>
+              <button class="scientific-key" data-insert="log(" type="button">log</button>
+              <button class="scientific-key" data-insert="ln(" type="button">ln</button>
+              <button class="scientific-key" data-insert="log2(" type="button">log₂</button>
+              <button class="scientific-key" data-insert="exp(" type="button">eˣ</button>
+              <button class="scientific-key" data-insert="abs(" type="button">|x|</button>
+              <button class="scientific-key" data-insert="round(" type="button">round</button>
+              <button class="scientific-key" data-insert="floor(" type="button">floor</button>
+              <button class="scientific-key" data-insert="ceil(" type="button">ceil</button>
+              <button class="scientific-key" data-insert="^" type="button">xʸ</button>
+              <button class="scientific-key" data-insert="!" type="button">n!</button>
+              <button class="scientific-key" data-insert="%" type="button">%</button>
+              <button class="scientific-key" data-insert="pi" type="button">π</button>
+              <button class="scientific-key" data-insert="e" type="button">e</button>
+            </div>
+          </div>
+          <div id="basePanel" class="conversion-panel" hidden>
+            <p class="scientific-title">进制转换 · 由后端完成</p>
+            <div class="conversion-row"><input id="baseValue" value="255" aria-label="进制输入值" /><select id="fromBase" aria-label="原进制"><option value="2">2 进制</option><option value="8">8 进制</option><option value="10" selected>10 进制</option><option value="16">16 进制</option></select><span>→</span><select id="toBase" aria-label="目标进制"><option value="2">2 进制</option><option value="8">8 进制</option><option value="10">10 进制</option><option value="16" selected>16 进制</option></select><button id="convertBase" class="convert-button" type="button">转换</button></div>
+            <strong id="baseResult" class="conversion-result">FF</strong>
+          </div>
+          <div id="unitPanel" class="conversion-panel" hidden>
+            <p class="scientific-title">单位换算 · 由后端完成</p>
+            <div class="conversion-row"><input id="unitValue" value="1" aria-label="单位输入值" /><select id="unitCategory" aria-label="单位类别"><option value="length">长度</option><option value="mass">质量</option><option value="temperature">温度</option></select><select id="fromUnit" aria-label="原单位"></select><span>→</span><select id="toUnit" aria-label="目标单位"></select><button id="convertUnit" class="convert-button" type="button">换算</button></div>
+            <strong id="unitResult" class="conversion-result">1000</strong>
+          </div>
+          <p class="keyboard-tip">支持键盘输入 · Enter 计算 · Esc 清空</p>
+        </article>
+
+        <aside class="history-card card">
+          <div class="card-heading">
+            <div><p class="section-kicker">DATABASE HISTORY</p><h2>计算历史</h2></div>
+            <button id="clearHistory" class="text-button danger" type="button">清空全部</button>
+          </div>
+          <div class="history-tools">
+            <input id="historySearch" type="search" placeholder="搜索表达式或结果…" aria-label="搜索历史" />
+            <label><input id="favoriteOnly" type="checkbox" /> 仅收藏</label>
+          </div>
+          <div id="historyList" class="history-list"><div class="empty-state"><span class="empty-icon">◌</span><p>正在从后端加载历史…</p></div></div>
+          <div class="history-footer"><span id="historyCount">0 条记录</span><div><button id="prevPage" class="refresh-button" type="button">‹</button><button id="nextPage" class="refresh-button" type="button">›</button><button id="refreshHistory" class="refresh-button" type="button">↻ 刷新</button></div></div>
+        </aside>
+      </section>
+
+      <section class="feature-strip">
+        <div class="feature-item"><span class="feature-icon">↗</span><div><strong>后端计算</strong><p>前端只提交表达式，结果由服务端返回。</p></div></div>
+        <div class="feature-item"><span class="feature-icon">▣</span><div><strong>数据库持久化</strong><p>SQLite 保存每一次成功计算。</p></div></div>
+        <div class="feature-item"><span class="feature-icon">✓</span><div><strong>安全解析</strong><p>使用白名单解析器，拒绝任意代码执行。</p></div></div>
+      </section>
+    </main>
+    <footer class="footer">CalcSpace · Frontend / Backend Separation · HBuilderX ready</footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
